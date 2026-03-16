@@ -1,0 +1,17 @@
+env: "local"
+http server:
+  address: "localhost:8082"
+  timeout: "4s"
+  idle timeout: "60s"
+
+  db:
+    Postgres:
+      host: "localhost"
+      port: 5432
+      user: "dima"
+      password: "dima"
+      db_name: "postgres"
+      ssl_mode: "disable"
+      connect_timeout: "2s"
+      migrate_path: "file://migrations"
+      migration_table: ""
