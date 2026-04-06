@@ -1,10 +1,12 @@
 package handlers
 
+import "url-shortener/apigateway/internal/http/handlers/aliashandlers"
+
 type Deps struct {
-	Alias *AliasHandler
+	Alias *aliashandlers.AliasHandler
 }
 
-func NewDeps(alias *AliasHandler) *Deps {
+func NewDeps(alias *aliashandlers.AliasHandler) *Deps {
 	return &Deps{
 		Alias: alias,
 	}

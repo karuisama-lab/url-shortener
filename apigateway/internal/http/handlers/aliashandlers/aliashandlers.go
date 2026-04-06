@@ -19,23 +19,24 @@ func NewAliasHandler(logger *slog.Logger, client *aliasclient.Client) *AliasHand
 	}
 }
 
-func (h *AliasHandler) SaveURL(c *fiber.Ctx) error {
+func (handler *AliasHandler) SaveURL(ctx *fiber.Ctx) error {
 	var req aliasdto.URLSaveRequest
-	if err := c.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&req); err != nil {
 		return err
 	}
-
-	ctx := c.UserContext()
-
-	resp, err := h.Client.SaveURL(req, ctx)
-	if err != nil {
-		return err
-	}
-
-	c.JSON(aliasdto.URLSaveResponse{
-		Code:    fiber.StatusOK,
-		Message: resp.Message,
-	})
-
 	return nil
+}
+
+func (handler *AliasHandler) GetURL(f *fiber.Ctx) error {
+	alias := f.Params("alias")
+	if alias == "" {
+		return f.Status(400).JSON(map[string]string{
+			"message": "alias is required",
+		})
+	}
+	return f.Status(200).JSON(aliasdto.URLGetResponse{
+		URL:     "https.example.com",
+		Message: "url is found",
+		Alias:   alias,
+	})
 }
