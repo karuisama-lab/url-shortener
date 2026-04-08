@@ -27,14 +27,14 @@ func (handler *AliasHandler) SaveURL(ctx *fiber.Ctx) error {
 	return nil
 }
 
-func (handler *AliasHandler) GetURL(f *fiber.Ctx) error {
-	alias := f.Params("alias")
+func (handler *AliasHandler) GetURL(ctx *fiber.Ctx) error {
+	alias := ctx.Params("alias")
 	if alias == "" {
-		return f.Status(400).JSON(map[string]string{
+		return ctx.Status(400).JSON(map[string]string{
 			"message": "alias is required",
 		})
 	}
-	return f.Status(200).JSON(aliasdto.URLGetResponse{
+	return ctx.Status(200).JSON(aliasdto.URLGetResponse{
 		URL:     "https.example.com",
 		Message: "url is found",
 		Alias:   alias,
