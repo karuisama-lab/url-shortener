@@ -3,13 +3,14 @@ package aliashandlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"log/slog"
+	"url-shortener/aliasservice/domain"
 	"url-shortener/apigateway/internal/http/dto/aliasdto"
 	"url-shortener/apigateway/internal/transport/clients/aliasclient"
 )
 
 type AliasHandler struct {
-	Logger *slog.Logger
-	Client *aliasclient.Client
+	Logger  *slog.Logger
+	Service domain.AliasInterface
 }
 
 func NewAliasHandler(logger *slog.Logger, client *aliasclient.Client) *AliasHandler {
@@ -24,7 +25,16 @@ func (handler *AliasHandler) SaveURL(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(&req); err != nil {
 		return err
 	}
-	return nil
+	alias, err := handler.Service.SaveURL(ctx.Context(), req.URL)
+	if err != nil {
+		return err
+	}
+	resp := aliasdto.URLSaveResponse{
+		"url saved",
+		alias,
+	}
+	return ctx.Status(201).JSON(resp)
+
 }
 
 func (handler *AliasHandler) GetURL(ctx *fiber.Ctx) error {

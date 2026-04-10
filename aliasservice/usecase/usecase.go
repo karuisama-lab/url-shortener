@@ -7,7 +7,7 @@ import (
 )
 
 type Service struct {
-	db DBInterface //TODO: интерфейс подменяем постгрес, pgxpool. Добавить интерфейс(+ вопрос где он должен лежать, в этом же файле? или тоже завести файл interfaces/ports отдельный в этой папке?)
+	repo domain.AliasRepository
 }
 
 func NewService(db DBInterface) *Service {
