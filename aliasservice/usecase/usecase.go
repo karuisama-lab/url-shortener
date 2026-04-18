@@ -3,28 +3,25 @@ package usecase
 import (
 	"context"
 	"url-shortener/aliasservice/domain"
-	"url-shortener/aliasservice/domain/entity"
 )
 
 type Service struct {
 	repo domain.AliasRepository
 }
 
-func NewService(db DBInterface) *Service {
+func NewService(repo domain.AliasRepository) *Service {
 	return &Service{
-		db: db,
+		repo: repo,
 	}
 }
 
-func (s *Service) SaveURL(reqDto aliasdto.URLSaveRequest, ctx context.Context) error {
-	req := &entity.URLSaveRequest{
-		UserID: reqDto.UserID,
-		URL:    reqDto.URL,
-	}
-	err := s.db.SaveURL(req)
+func (s *Service) SaveURL(ctx context.Context, url string) (string, error) {
+	alias := "some-alias"
+	// заменить заглушку some-alias на реальную генерацию alias
+	err := s.repo.SaveURL(ctx, url, alias)
 	if err != nil {
-		return domain.ErrNotSave
+		return "", domain.ErrNotSave
 	}
 
-	return err
+	return alias, nil
 }

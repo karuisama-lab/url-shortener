@@ -10,7 +10,7 @@ import (
 
 type AliasHandler struct {
 	Logger  *slog.Logger
-	Service domain.AliasInterface
+	Service domain.AliasService
 }
 
 func NewAliasHandler(logger *slog.Logger, client *aliasclient.Client) *AliasHandler {

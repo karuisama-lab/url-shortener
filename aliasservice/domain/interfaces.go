@@ -6,6 +6,6 @@ type AliasRepository interface {
 	SaveURL(ctx context.Context, url string, alias string) error
 }
 
-type AliasInterface interface {
+type AliasService interface {
 	SaveURL(ctx context.Context, url string) (string, error)
 }
