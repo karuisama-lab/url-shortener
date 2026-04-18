@@ -5,18 +5,15 @@ import (
 	"log/slog"
 	"url-shortener/aliasservice/domain"
 	"url-shortener/apigateway/internal/http/dto/aliasdto"
-	"url-shortener/apigateway/internal/transport/clients/aliasclient"
 )
 
 type AliasHandler struct {
-	Logger  *slog.Logger
 	Service domain.AliasService
 }
 
-func NewAliasHandler(logger *slog.Logger, client *aliasclient.Client) *AliasHandler {
+func NewAliasHandler(service domain.AliasService) *AliasHandler {
 	return &AliasHandler{
-		Logger: logger,
-		Client: client,
+		Service: service,
 	}
 }
 
@@ -25,17 +22,18 @@ func (handler *AliasHandler) SaveURL(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(&req); err != nil {
 		return err
 	}
-	alias, err := handler.Service.SaveURL(ctx.Context(), req.URL)
-	if err != nil {
-		return err
-	}
-	resp := aliasdto.URLSaveResponse{
-		"url saved",
-		alias,
-	}
-	return ctx.Status(201).JSON(resp)
+	if req.URL == {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "url is required",
+		})
+		alias, err := handler.Service.SaveURL(ctx.Context(), req.URL)
+		if err != nil {return err
+			resp := aliasdto.URLSaveResponse{
+				Message: "url saved",
+				Alias: alias,
+			}
+			return ctx.Status(fiber.StatusCreated).JSON(resp)
+		}
 
-}
 
 func (handler *AliasHandler) GetURL(ctx *fiber.Ctx) error {
 	alias := ctx.Params("alias")

@@ -6,7 +6,7 @@ type Repository struct {
 	// db *sql.DB
 }
 
-func NewRepository( /* db */) *Repository {
+func NewRepository( /* db */ ) *Repository {
 	return &Repository{}
 }
 
